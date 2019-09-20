@@ -1,0 +1,59 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package GameEntities;
+
+
+import java.util.Random;
+
+/**
+ *
+ * @author Brian
+ */
+public class Enemy {
+    private String name;    // Name.
+    private int health;         // How much health it has (hit points).
+    private int damage;     // How much damage the enemy will do.
+    private int hitChance;  // How much of a chance it'll cause damge.
+    Random random = new Random();
+    
+    
+    public Enemy(String name, int hP, int damage, int hitChance){
+        this.name = name;
+        this.health = hP;
+        this.damage = damage;
+        this.hitChance = hitChance;
+    }
+
+    public String getName(){
+        return name;
+    }
+    
+    public void adjustHealth(int value){
+        health += value;
+    }
+    
+    public int getHitChance(){
+        return hitChance;
+    }
+    
+    public int getHealth(){
+        return health;
+    }
+    
+    public int getDamage(){
+        return damage;
+    }
+    public boolean doesAttack(){
+        int roll = random.nextInt(99)+1;
+        if (roll < hitChance){
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    
+}

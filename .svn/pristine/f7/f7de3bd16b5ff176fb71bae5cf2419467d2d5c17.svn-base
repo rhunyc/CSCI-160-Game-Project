@@ -1,0 +1,52 @@
+
+import java.util.Scanner;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author Brian
+ */
+public class GameSetup {
+    
+    private GameSetup(){
+        
+    }
+    
+    public static Coworker setupCoworker(int option){
+        Boolean hasntPicked = true;
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Please enter your co-worker's name:");
+        String name = scan.next();
+        switch (option) {
+            case 1:
+                Coworker coworker = new Coworker(name, 100, 100, 25);
+                break;
+            case 2:
+                Coworker coworker = new Coworker(name);
+                break;
+            case 3:
+                int health = MenuHelper.displayMenu("Please enter an initial health amount, with 1 being the lowest health:", 1, 100);
+                int stamina = MenuHelper.displayMenu("Please enter an initial stamina amount, with 1 being the lowest stamina:", 1, 100);
+                int ammo = MenuHelper.displayMenu("Please enter an initial ammo amount, with 0 being the lowest ammo:", 0, 50);
+                Coworker coworker = new Coworker(name, health, stamina, ammo);
+        }    
+        return coworker;
+    }
+    
+    public static Player setupPlayer(int option){
+        Scanner scan = new Scanner(System.in);
+    }
+    
+    
+    public static Game setupGame(){
+        Scanner scan = new Scanner(System.in);
+        
+    }
+    
+    
+}

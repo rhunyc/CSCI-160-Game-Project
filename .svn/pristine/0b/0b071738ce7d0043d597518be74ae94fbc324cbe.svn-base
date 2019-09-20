@@ -1,0 +1,83 @@
+package Game;
+
+
+import GameEntities.Player;
+import GameEntities.Coworker;
+import HelperClasses.MenuHelper;
+import java.util.Scanner;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author Brian
+ */
+public class GameSetup {
+    
+    private GameSetup(){
+        
+    }
+    
+    public static Coworker setupCoworker(int option){
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Please enter your co-worker's name:");
+        String name = scan.next();
+        Coworker coworker = new Coworker(name);
+        switch (option) {
+            case 1:
+                Coworker case1 = new Coworker(name, 0);
+                coworker = case1;
+                break;
+            case 2:
+                Coworker case2 = new Coworker(name, 1);
+                coworker = case2;
+                break;
+            case 3:
+                Coworker case3 = new Coworker(name);
+                coworker = case3;
+                break;
+
+        }    
+        return coworker;
+    }
+    
+    public static Player setupPlayer(int option){
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Please enter your name:");
+        String name = scan.next();
+        Player player = new Player(name);
+        switch (option) {
+            case 1:
+                Player case1 = new Player(name, 0);
+                player = case1;
+                break;
+            case 2:
+                Player case2 = new Player(name, 1);
+                player = case2;
+                break;
+            case 3:
+                Player case3 = new Player(name);
+                player = case3;
+                break;
+
+        }    
+        return player;
+    }
+    
+    
+    public static Game setupGame(){
+        int difficulty = MenuHelper.displayMenu("Hi welcome to my game. I'm overwhelmed, pick a difficulty method\n 1) Easy\n 2) Medium\n 3) Hard.",1,3);
+        int coworkerChoice = MenuHelper.displayMenu("Great! Now try picking the kind of coworker you want to be stuck with:\n 1) Scientist 2) Security Guard 3) Random", 1, 3);
+        Coworker coworker = GameSetup.setupCoworker(coworkerChoice);
+        int playerChoicer = MenuHelper.displayMenu("Cool now pick what you are.\n 1)Scientist\n 2)Guard\n 3)Random", 1, 3);
+        Player player = GameSetup.setupPlayer(playerChoicer);
+        Game game = new Game(difficulty, coworker, player);
+        return game;
+    }
+    
+    
+}

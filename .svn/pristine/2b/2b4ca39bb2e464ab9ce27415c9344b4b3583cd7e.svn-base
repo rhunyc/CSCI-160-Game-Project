@@ -1,0 +1,127 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Game;
+
+import java.util.Random;
+
+/**
+ *
+ * @author Brian
+ */
+public class Game {
+
+    private String room;
+    private String enemyType;
+    private String supplyType;
+    
+    Random random = new Random();
+
+    private boolean checkCoworkerCanTravel() {
+        boolean canTravel = true;
+
+        return canTravel;
+    }
+
+    private void getNewRoom() {
+        int roll = random.nextInt(15);
+        switch (roll) {
+            case 0:
+            case 1:
+                room = "Janitor's Closet";
+                break;
+
+            case 2:
+            case 3:
+                room = "Hallway";
+                break;
+
+            case 4:
+            case 5:
+            case 6:
+                room = "Office";
+                break;
+
+            case 7:
+            case 8:
+            case 9:
+                room = "Testing Lab";
+                break;
+
+            case 10:
+                room = "Elevator";
+                break;
+
+            case 11:
+            case 12:
+                room = "Breakroom";
+                break;
+
+            case 13:
+                room = "Medbay";
+                break;
+
+            case 14:
+                room = "Security Room";
+                break;
+
+            case 15:
+                room = "Waiting Room";
+                break;
+
+        }
+    }
+
+    private void getNewRoomEnemies() {
+        int roll = random.nextInt(10);
+        switch (roll) {
+            case 0:
+            case 1:
+                enemyType = "One Soldier";
+                break;
+            case 2:
+            case 3:
+                enemyType = "A couple headcrabs";
+                break;
+            case 4:
+                enemyType = "Multiple Xen";
+                break;
+            case 5:
+                enemyType = "Multple Soldiers";
+                break;
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+                enemyType = "Empty";
+                break;
+            case 10:
+                enemyType = "Soldiers and Xen";
+                break;
+        }
+
+    }
+    
+    private void getNewRoomSupplies(){
+        int roll = random.nextInt(7);
+        switch (roll){
+            case 0:
+                supplyType = "Small ammo";
+                
+            case 1:
+                supplyType = "Big ammo";
+                
+            case 3:
+                supplyType = "Medkit";
+                
+            case 4:
+                supplyType = "Bandage";
+                
+            case 5: case 6: case 7:
+                supplyType = "None.";
+        }
+    }
+
+}

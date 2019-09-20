@@ -1,0 +1,139 @@
+package HelperClasses;
+
+import GameEntities.Player;
+import GameEntities.Coworker;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author Brian
+ */
+public class DescriptionHelper {
+    public static String getHealthDescription(Coworker coworker){
+        int health = coworker.getHealth();
+        String healthDescription;
+        if (health >= 65){
+            healthDescription = " Healthy";
+        } else if (health < 65 && health >= 40) {
+            healthDescription = " Sustained damage";
+        } else if (health < 40 && health > 0) {
+            healthDescription = " Critical health";
+        } else {
+            healthDescription = " Dead.";
+        }
+        return healthDescription;
+    }
+    
+    public static String getStaminaDescription(Coworker coworker){
+        int stamina = coworker.getStamina();
+        String staminaDescription;
+        if (stamina >= 65){
+            staminaDescription = "Refreshed";
+        } else if (stamina < 65 && stamina >= 40) {
+            staminaDescription = "Tired";
+        } else if (stamina < 40 && stamina > 0){
+            staminaDescription = "Exhausted";
+        } else {
+            staminaDescription = "Unable to move.";
+        }
+        
+        return staminaDescription;
+    }
+    
+    public static String getAmmoDescription(Coworker coworker){
+        int ammo = coworker.getAmmo();
+        String ammoDescription;
+        if (ammo >= 12){
+            ammoDescription = "   Plenty: " + ammo + " ammo remaining.";
+        } else if (ammo < 12 && ammo >= 6) {
+            ammoDescription = "   Moderate: " + ammo + " ammo remaining.";
+        } else if (ammo < 6 && ammo > 0){
+            ammoDescription = "   Low: " + ammo + " ammo remaining.";
+        } else {
+            ammoDescription = "   None remaining.";
+        }
+        
+        
+        return ammoDescription;
+    }
+    
+    
+    public static String getStatus(Coworker coworker){
+        String health = DescriptionHelper.getHealthDescription(coworker);
+        String stamina = DescriptionHelper.getStaminaDescription(coworker);
+        String ammo = DescriptionHelper.getAmmoDescription(coworker);
+        String name = coworker.getName();
+        String status = coworker.getType() + " "+ name + "'s Status:\n Health: " + health + "\n Stamina: " + stamina + "\n Ammo: "+ ammo +"\n"; 
+
+        return status;
+    }
+    
+        public static String getHealthDescription(Player player){
+        int health = player.getHealth();
+        String healthDescription;
+        if (health >= 65){
+            healthDescription = " Healthy";
+        } else if (health < 65 && health >= 40) {
+            healthDescription = " Sustained damage:";
+        } else if (health < 40 && health > 0) {
+            healthDescription = " Critical health";
+        } else {
+            healthDescription = " Dead.";
+        }
+        return healthDescription;
+    }
+    
+    public static String getStaminaDescription(Player player){
+        int stamina = player.getStamina();
+        String staminaDescription;
+        if (stamina >= 65){
+            staminaDescription = "Refreshed";
+        } else if (stamina < 65 && stamina >= 40) {
+            staminaDescription = "Tired";
+        } else if (stamina < 40 && stamina > 0){
+            staminaDescription = "Exhausted";
+        } else {
+            staminaDescription = "Unable to move";
+        }
+        
+        return staminaDescription;
+    }
+    
+    public static String getAmmoDescription(Player player){
+        int ammo = player.getAmmo();
+        String ammoDescription;
+        if (ammo >= 12){
+            ammoDescription = "   Plenty: " + ammo + " ammo remaining.";
+        } else if (ammo < 12 && ammo >= 6) {
+            ammoDescription = "   Moderate: " + ammo + " ammo remaining.";
+        } else if (ammo < 6 && ammo > 0){
+            ammoDescription = "   Low: " + ammo + " ammo remaining.";
+        } else {
+            ammoDescription = "   None remaining.";
+        }
+        
+        
+        return ammoDescription;
+    }
+    
+    
+    public static String getStatus(Player player){
+        String health = DescriptionHelper.getHealthDescription(player);
+        String stamina = DescriptionHelper.getStaminaDescription(player);
+        String ammo = DescriptionHelper.getAmmoDescription(player);
+        String name = player.getName();
+        
+        
+        String status = player.getType() + " " + name + "'s Status:\n Health: " + health + "\n Stamina: " + stamina + "\n Ammo: "+ ammo +"\n"; 
+
+        return status;
+    }
+    
+    
+    
+}

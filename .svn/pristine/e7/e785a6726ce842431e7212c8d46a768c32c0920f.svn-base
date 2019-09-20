@@ -1,0 +1,72 @@
+package GameEntities;
+
+
+import java.util.Random;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author Brian
+ */
+public class Coworker {
+    Random random = new Random();
+    private String name;
+    private int health;
+    private int stamina;
+    private int ammo;
+
+    Coworker() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    public String getName(){
+        return name;
+    }
+    
+    public int getHealth(){
+    return health;
+    }
+    
+    public void adjustHealth(int value){
+        health += value;
+    }
+    
+    public int getStamina(){
+        return stamina;
+    }
+    
+    public void adjustStamina(int value){
+        stamina += value;
+    }
+    
+    public int getAmmo(){
+        return ammo;
+    }
+    
+    public void adjustAmmo(int value){
+        ammo += value;
+    }
+    
+    public Coworker(String name){
+        this.name = name;
+        health = random.nextInt(99)+1;
+        stamina = random.nextInt(99)+1;
+        ammo = random.nextInt(6)+1;
+        
+    }
+    
+    public Coworker(String name, int health, int stamina, int ammo){
+        this.name = name;
+        this.health = health;
+        this.stamina = stamina;
+        this.ammo = ammo;
+    }
+    
+    
+}
+

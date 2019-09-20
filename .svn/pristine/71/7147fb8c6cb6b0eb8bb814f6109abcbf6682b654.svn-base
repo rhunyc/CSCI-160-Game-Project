@@ -1,0 +1,140 @@
+package GameEntities;
+
+
+import java.util.ArrayList;
+import java.util.Random;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author Brian
+ */
+public class Player {
+     Random random = new Random();
+    private String name;
+    private int health;
+    private int stamina;
+    private int ammo;
+    private int iType;
+    private String type;
+    private ArrayList<Item> inventory;
+
+    
+    public String getName(){
+        return name;
+    }
+    
+    public void setName(String name){
+        this.name = name;
+    }
+    
+    public void addItemToInventory(Item item){
+        inventory.add(item);
+    }
+    
+    public void removeItemFromInventory(Item item){
+        inventory.remove(item);
+    }
+    
+    public boolean isItemInInventory(Item item){
+        return inventory.contains(item);
+    }
+    
+    public Item getItemFromInventory(String item){
+        for (Item currentItem: inventory){
+            if (item.equalsIgnoreCase(currentItem.getName())) {
+                return currentItem;
+            }
+        }
+        
+        return null;
+    }
+    
+    public String listInventory(){
+        if (inventory.size() == 0){
+            return "You have no items.\n";
+        }
+        String inventoryDescription = "";
+        
+        for (Item item : inventory) {
+            inventoryDescription += item.getName() + "\n";
+        }
+        
+        return inventoryDescription;
+    }
+    
+    
+    public String getType(){
+        if (iType == 0){
+            type = "Scientist";
+        } else {
+            type = "Security Guard";
+        }
+        return type;
+    }
+    
+    public int getHealth(){
+    return health;
+    }
+    
+    public void adjustHealth(int value){
+        health += value;
+    }
+    
+    public int getStamina(){
+        return stamina;
+    }
+    
+    public void adjustStamina(int value){
+        stamina += value;
+    }
+    
+    public int getAmmo(){
+        return ammo;
+    }
+    
+    public void adjustAmmo(int value){
+        ammo += value;
+    }
+    
+    public Player(){
+        
+    }
+    
+    public Player(String name){
+        int roll = random.nextInt(10);
+        if (roll > 1){
+        health = random.nextInt(50)+50;
+        stamina = random.nextInt(50)+50;
+        ammo = random.nextInt(6)+1;
+        iType = random.nextInt(1);
+        } else {
+            this.name = "Gordon Freeman";
+            health = 150;
+            stamina = 150;
+            ammo = 24;
+            iType = 0;
+            System.out.print("You got lucky! Your character is now Gordon Freeman, the legendary scientist. (bonus stats awarded) ");
+        }
+        name = this.name;
+    }
+    
+    public Player(String name, int iType){
+        this.name = name;
+        if (iType == 0) {
+            health = 100;
+            stamina = 100;
+            ammo = 0;
+        } else {
+            health = 65;
+            stamina = 65;
+            ammo = 24;
+        }
+        
+    }
+}

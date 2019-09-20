@@ -1,0 +1,302 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Game;
+
+import GameEntities.Coworker;
+import GameEntities.Enemy;
+import GameEntities.Player;
+import HelperClasses.DescriptionHelper;
+import HelperClasses.MenuHelper;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Random;
+
+/**
+ *
+ * @author Brian
+ */
+public class Game {
+
+    Coworker coworker;
+    Player player;
+    Random random = new Random();
+
+    DecimalFormat timeFormat = new DecimalFormat("00.00");
+    private int floorsToSurface = 70;
+    private int day = 1;
+    private int radiationLevel = 1;
+    private int difficulty;
+    private String room;
+    private String radiationOutput;
+    private double time = 06;
+    private boolean roomClear = true;
+    private ArrayList<Enemy> enemyList;
+    private boolean canRun = false;
+    private boolean bothAlive = true;
+
+    public Game(int difficulty, Coworker coworker, Player player) {
+        this.difficulty = difficulty;
+        this.coworker = coworker;
+        this.player = player;
+
+        enemyList = new ArrayList<Enemy>();
+
+    }
+
+    private String listEnemies() {
+        if (enemyList.isEmpty()) {
+            return "None.";
+        }
+        String enemies = "";
+
+        for (Enemy enemy : enemyList) {
+            enemies += enemy.getName() + " ";
+        }
+        return enemies;
+    }
+
+    private void getNewRoom() {
+        int roll = random.nextInt(15);
+        switch (roll) {
+            case 0:
+            case 1:
+                room = "Janitor's Closet";
+                break;
+
+            case 2:
+            case 3:
+                room = "Hallway";
+                break;
+
+            case 4:
+            case 5:
+            case 6:
+                room = "Office";
+                break;
+
+            case 7:
+            case 8:
+            case 9:
+                room = "Testing Lab";
+                break;
+
+            case 10:
+                room = "Elevator";
+                break;
+
+            case 11:
+            case 12:
+                room = "Breakroom";
+                break;
+
+            case 13:
+                room = "Medbay";
+                break;
+
+            case 14:
+                room = "Security Room";
+                break;
+
+            case 15:
+                room = "Waiting Room";
+                break;
+
+        }
+    }
+
+    private void getNewRoomEnemies() {
+        int roll = random.nextInt(10);
+        if (roll > 0) {
+            Enemy headCrab1 = new Enemy("Headcrab", 5, 1, 50);
+            Enemy headCrab2 = new Enemy("Headcrab", 5, 1, 50);
+            Enemy soldier = new Enemy("Soldier", 10, 3, 70);
+            enemyList.add(soldier);
+            enemyList.add(headCrab1);
+            enemyList.add(headCrab2);
+            roomClear = false;
+        }
+
+    }
+
+    private String getRadiationLevels() {
+        if (radiationLevel >= 80) {
+            radiationOutput = "Warning: Hazardous radiation levels detected.";
+        } else if (radiationLevel < 80 && radiationLevel >= 40) {
+            radiationOutput = "Caution: Minor radiation levels detected.";
+        } else {
+            radiationOutput = "Notice: Minimum radiation levels detected.";
+        }
+        return radiationOutput;
+    }
+
+    private double getNewTime() {
+        time += 1;
+        if (time > 24) {
+            double leftOverTime = time - 24;
+            time = 0 + leftOverTime;
+            day += 1;
+        }
+
+        return time;
+    }
+
+    private void outputTurnInformation() {
+        System.out.println("\nDay:   " + day + "            Floors to surface: " + floorsToSurface + "    Radiation levels: " + this.getRadiationLevels());
+        System.out.println("Time: " + timeFormat.format(time) + "         Location: " + room + "   Enemies present: " + this.listEnemies());
+        System.out.print(DescriptionHelper.getStatus(player));
+        System.out.print(DescriptionHelper.getStatus(coworker));
+    }
+
+    private void processTurn() {
+        if (roomClear) {
+            int menuChoice = MenuHelper.displayMenu(" 1)Rest\n 2)Search for supplies\n 3)Move stealthily\n 4)Move normally\n 5)Run\n", 1, 5);
+            switch (menuChoice) {
+                case 1:
+                    this.processRest();
+                    break;
+                case 2:
+                    //this.processSuppliesSearch();
+                    break;
+                case 3:
+                    this.processMoveStealthily();
+                    break;
+                case 4:
+                    this.processMoveNormally();
+                    break;
+                case 5:
+                    this.processRun();
+
+            }
+        } else {
+            int menuChoice = MenuHelper.displayMenu(" 1) Fight\n 2) Run", 1, 2);
+            switch (menuChoice) {
+                case 1:
+                    this.processFight();
+                    break;
+                case 2:
+                    int roll = random.nextInt(10);
+                    if (roll > 7) {
+                        this.processRun();
+                        System.out.println("You successfully managed to escape.");
+                    } else {
+                        System.out.println("You were unable to escape.");
+                    }
+
+            }
+        }
+    }
+
+    private void processRest() {
+        if (player.getStamina() < 100) {
+            player.adjustStamina(50);
+        }
+        if (coworker.getStamina() < 100) {
+            coworker.adjustStamina(50);
+        }
+        time += 3;
+        this.getNewTime();
+        radiationLevel += 4;
+    }
+
+    private void processFight() {
+        do {
+
+            if (player.doesAttack() == true) {
+                enemyList.get(0).adjustHealth(-player.getDamage());
+                System.out.println(player.getType() + " " + player.getName() + " does " + player.getDamage() + " damage to " + enemyList.get(0).getName());
+                if (enemyList.get(0).getHealth() <= 0) {
+                    enemyList.remove(0);
+                }
+            } else {
+                System.out.println(enemyList.get(0).getName() + " dodges " + player.getType() + " " + player.getName() + "'s attack!");
+            }
+
+            if (coworker.doesAttack() == true) {
+                enemyList.get(0).adjustHealth(-coworker.getDamage());
+                System.out.println(player.getType() + " " + coworker.getName() + " does " + coworker.getDamage() + " damage to " + enemyList.get(0).getName());
+
+                if (enemyList.get(0).getHealth() <= 0) {
+                    enemyList.remove(0);
+                }
+            } else {
+                System.out.println(enemyList.get(0).getName() + " dodges " + coworker.getType() + " " + coworker.getName() + "'s attack!");
+            }
+
+            for (int i = 0; i < enemyList.size(); i++) {
+                int rollForPlayer = random.nextInt(49) + 1;
+                Enemy current = enemyList.get(i);
+                if (current.doesAttack()) {
+                    if (rollForPlayer > 25) {
+                        player.adjustHealth(-current.getDamage());
+                        System.out.println(current.getName() + " hit " + player.getType() + " " + player.getName() + " for " + current.getDamage() + " damage!");
+                    } else {
+                        coworker.adjustHealth(-current.getDamage());
+                        System.out.println(current.getName() + " hit " + coworker.getType() + " " + coworker.getName() + " for " + current.getDamage() + " damage!");
+                    }
+
+                } else {
+                    if (rollForPlayer > 25) {
+                        System.out.println(player.getType() + " " + player.getName() + " dodges " + current.getName() + "'s attack!");
+                    } else {
+                        System.out.println(coworker.getType() + " " + coworker.getName() + " dodges " + current.getName() + "'s attack!");
+
+                    }
+                }
+
+            }
+            System.out.println("");
+            int option = MenuHelper.displayMenu("Select a choice.\n 1)Fight.\n 2)Try to run anyways.", 1, 2);
+            if (option == 2) {
+                int roll = random.nextInt(100);
+                if (roll > 70) {
+                    System.out.println("You successfully escaped");
+                    canRun = true;
+                    this.processRun();
+                }
+            }
+
+        } while (player.getHealth() > 0 && !enemyList.isEmpty() && !canRun);
+
+        enemyList.clear();
+        roomClear = true;
+    }
+
+    private void processMoveStealthily() {
+        this.getNewTime();
+        this.getNewRoom();
+        radiationLevel += 3;
+        time += 2;
+    }
+
+    private void processMoveNormally() {
+        this.getNewTime();
+        this.getNewRoom();
+        this.getNewRoomEnemies();
+        player.adjustStamina(-10);
+        coworker.adjustStamina(-10);
+        time += 1;
+        radiationLevel += 2;
+    }
+
+    private void processRun() {
+        this.getNewTime();
+        this.getNewRoom();
+        this.getNewRoomEnemies();
+        player.adjustStamina(-30);
+        coworker.adjustStamina(-30);
+        radiationLevel += 1;
+    }
+
+    public void start() {
+        this.room = "Waiting Room";
+        this.roomClear = true;
+        while (0 < player.getHealth()) {
+            this.outputTurnInformation();
+            this.processTurn();
+        }
+        System.out.println("You lose.");
+    }
+}
